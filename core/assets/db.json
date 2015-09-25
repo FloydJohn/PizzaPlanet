@@ -1,0 +1,102 @@
+{
+  "ingredienti": [
+    "Pasta",
+    "Mozzarella",
+    "Pomodoro",
+    "Prosciutto Cotto",
+    "Carciofi",
+    "Funghi",
+    "Bufalina",
+    "Salame Dolce",
+    "Salame Piccante",
+    "Speck",
+    "Crudo",
+    "Brie",
+    "Fontina",
+    "Grana",
+    "Gorgonzola",
+    "Rucola",
+    "Pomodoro Fresco",
+    "Insalata",
+    "Salmone",
+    "Gamberetti",
+    "Polpa di granchio",
+    "Tonno",
+    "Cipolle",
+    "Acciughe",
+    "Calamari",
+    "Wurstel",
+    "Patatine",
+    "Origano",
+    "Aglio",
+    "Olio Piccante"
+  ],
+  "pizze": [
+    {
+      "Nome": "Margherita",
+      "ingredienti": [
+        1,
+        2
+      ]
+    },
+    {
+      "Nome": "Marinara",
+      "ingredienti": [
+        2,
+        27,
+        28
+      ]
+    },
+    {
+      "Nome": "Diavola",
+      "ingredienti": [
+        1,
+        2,
+        8
+      ]
+    },
+    {
+      "Nome": "Prosciutto",
+      "ingredienti": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "Nome": "Carciofi",
+      "ingredienti": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "Nome": "Funghi",
+      "ingredienti": [
+        1,
+        2,
+        5
+      ]
+    },
+    {
+      "Nome": "Prosciutto Funghi",
+      "ingredienti": [
+        1,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "Nome": "Capricciosa",
+      "ingredienti": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}
