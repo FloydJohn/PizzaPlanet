@@ -7,4 +7,5 @@ public class Messaggi {
     public static final int ProssimoCliente = 3;
     public static final int Ordine = 4;
     public static final int OrdineCompletato = 5;
+    public static final int DipendenteArrivato = 6;
 }

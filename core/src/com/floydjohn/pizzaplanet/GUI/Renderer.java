@@ -19,8 +19,6 @@ import com.floydjohn.pizzaplanet.data.time.Tempo;
 import java.util.EnumMap;
 import java.util.Map;
 
-//TODO Risolvere problema relativo ai percorsi dipendenti/clienti
-
 public class Renderer {
 
     private static TiledMap currentMap;
@@ -89,6 +87,7 @@ public class Renderer {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (postoSelezionato != null) {
             Vector2 start = coordinateRealiDi(postoSelezionato).add(getTileWidth() / 2, getTileHeight() / 2);
+            shapeRenderer.setColor(Color.BLUE);
             shapeRenderer.line(start.x, start.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         }
         for (Dipendente dipendente : pizzeria.getDipendenti())

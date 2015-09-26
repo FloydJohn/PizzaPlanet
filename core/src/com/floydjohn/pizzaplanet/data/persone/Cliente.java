@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
-import com.floydjohn.pizzaplanet.GUI.Disegnabile;
+import com.floydjohn.pizzaplanet.GUI.Persona;
 import com.floydjohn.pizzaplanet.GUI.Renderer;
 import com.floydjohn.pizzaplanet.data.posti.Posto;
 import com.floydjohn.pizzaplanet.data.prodotti.Database;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Cliente extends Disegnabile implements Telegraph {
+public class Cliente extends Persona implements Telegraph {
 
     private Ordine ordine;
     private String nome;

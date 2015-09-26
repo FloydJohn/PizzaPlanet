@@ -23,6 +23,7 @@ public class PizzaPlanet extends ApplicationAdapter implements InputProcessor {
         paese = new Paese();
         renderer = new Renderer(paese.getPizzeria());
         paese.getPizzeria().assumi(Posto.Cassa, new Dipendente());
+        paese.getPizzeria().assumi(Posto.Farcitura, new Dipendente());
     }
 
     @Override
