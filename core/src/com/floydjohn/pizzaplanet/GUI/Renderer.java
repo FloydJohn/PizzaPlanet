@@ -11,13 +11,16 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.floydjohn.pizzaplanet.data.persone.Cliente;
 import com.floydjohn.pizzaplanet.data.persone.Dipendente;
-import com.floydjohn.pizzaplanet.data.posti.Pizzeria;
+import com.floydjohn.pizzaplanet.data.posti.Paese;
 import com.floydjohn.pizzaplanet.data.posti.Posto;
 import com.floydjohn.pizzaplanet.data.time.Tempo;
 
 import java.util.EnumMap;
 import java.util.Map;
+
+//TODO Caricare immagini dinamiche
 
 public class Renderer {
 
@@ -25,13 +28,13 @@ public class Renderer {
     private static TiledMapRenderer mapRenderer;
     private static Map<Posto, Vector2> coordinatePosti = new EnumMap<>(Posto.class);
     private static BitmapFont font = new BitmapFont();
-    private Pizzeria pizzeria;
+    private Paese paese;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
 
-    public Renderer(Pizzeria pizzeria) {
-        this.pizzeria = pizzeria;
+    public Renderer(Paese paese) {
+        this.paese = paese;
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         font.setColor(Color.RED);
@@ -69,6 +72,10 @@ public class Renderer {
         return null;
     }
 
+    public static Vector2 coordinateCoda(int postoInCoda) {
+        return new Vector2(Math.max((postoInCoda + 3) * 32, 288), Math.max(320 - (postoInCoda * 32), 128));
+    }
+
     public void render(Posto postoSelezionato) {
 
         camera.update();
@@ -76,10 +83,8 @@ public class Renderer {
         mapRenderer.render();
 
         batch.begin();
-        for (Dipendente dipendente : pizzeria.getDipendenti()) {
-            dipendente.update();
-            batch.draw(dipendente.getTexture(), dipendente.getPosizioneReale().x, dipendente.getPosizioneReale().y);
-        }
+        for (Dipendente dipendente : paese.getPizzeria().getDipendenti()) dipendente.draw(batch);
+        for (Cliente cliente : paese.getClienti()) cliente.draw(batch);
 
         drawTempo();
         batch.end();
@@ -90,7 +95,7 @@ public class Renderer {
             shapeRenderer.setColor(Color.BLUE);
             shapeRenderer.line(start.x, start.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         }
-        for (Dipendente dipendente : pizzeria.getDipendenti())
+        for (Dipendente dipendente : paese.getPizzeria().getDipendenti())
             dipendente.getProgressBar().draw(shapeRenderer, dipendente.getPosizioneReale());
         shapeRenderer.end();
 

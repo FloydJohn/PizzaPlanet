@@ -51,4 +51,8 @@ public class Timer implements Percentage {
     public void setDelay(float delay) {
         this.delay = delay;
     }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
 }

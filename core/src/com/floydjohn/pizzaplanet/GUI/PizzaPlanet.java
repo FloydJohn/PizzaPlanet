@@ -21,7 +21,7 @@ public class PizzaPlanet extends ApplicationAdapter implements InputProcessor {
         Database.populate();
         Gdx.input.setInputProcessor(this);
         paese = new Paese();
-        renderer = new Renderer(paese.getPizzeria());
+        renderer = new Renderer(paese);
         paese.getPizzeria().assumi(Posto.Cassa, new Dipendente());
         paese.getPizzeria().assumi(Posto.Farcitura, new Dipendente());
     }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.floydjohn.pizzaplanet.GUI.Persona;
 import com.floydjohn.pizzaplanet.GUI.Renderer;
-import com.floydjohn.pizzaplanet.data.posti.Posto;
 import com.floydjohn.pizzaplanet.data.prodotti.Database;
 import com.floydjohn.pizzaplanet.data.prodotti.Ordine;
 import com.floydjohn.pizzaplanet.data.prodotti.Prodotto;
@@ -27,10 +26,10 @@ public class Cliente extends Persona implements Telegraph {
     private boolean mioTurno = false;
 
     private int giorniPerOrdinazione;
+    private int postoInCoda;
 
     public Cliente(int giorniPerOrdinazione) {
         super(Tipo.Cliente);
-        MessageManager.getInstance().addListeners(this, Messaggi.OrdineCompletato, Messaggi.ProssimoCliente);
         this.giorniPerOrdinazione = giorniPerOrdinazione;
         this.nome = FileParser.getNameCliente();
         genera();
@@ -38,20 +37,24 @@ public class Cliente extends Persona implements Telegraph {
 
     @Override
     public void update() {
+        super.updatePosition();
+
         switch (statoCorrente) {
             case Fuori:
-                if (ordine.isPassato()) statoCorrente = Stato.Cammina;
+                if (ordine.isPassato()) {
+                    statoCorrente = Stato.Cammina;
+                    //System.out.println("[" + nome + "] Entro e mando ClienteInPizzeria!");
+                    MessageManager.getInstance().dispatchMessage(this, Messaggi.ClienteInPizzeria);
+                }
                 break;
             case Cammina:
-                System.out.println("[CLIENTE] Sono " + nome + ", cammino in pizzeria...");
-                posizioneReale = new Vector2(100, 100);
-                statoCorrente = Stato.Coda;
-                MessageManager.getInstance().dispatchMessage(this, Messaggi.ClienteInAttesa, this);
-                System.out.println("[CLIENTE] Mandato cliente in attesa ;)");
+                if (!super.isMoving()) {
+                    statoCorrente = Stato.Coda;
+                }
                 break;
             case Coda:
                 if (mioTurno) {
-                    System.out.println("[CLIENTE] E' il mio turno! Invio l'ordine.");
+                    //System.out.println("["+nome+"] Mio turno! Ordino");
                     statoCorrente = Stato.Ordina;
                     MessageManager.getInstance().dispatchMessage(this, Messaggi.Ordine, ordine);
                     mioTurno = false;
@@ -61,9 +64,9 @@ public class Cliente extends Persona implements Telegraph {
                 //Wait for dipendente
                 break;
             case Esci:
-                System.out.println("[CLIENTE] Ordine completato, yayy! Me ne torno a casa!");
+                //System.out.println("["+nome+"] Fine, esco!");
                 genera();
-                posizioneReale = Renderer.coordinateRealiDi(Posto.Fuori);
+                super.setNext(new Vector2());
                 statoCorrente = Stato.Fuori;
                 break;
         }
@@ -79,7 +82,7 @@ public class Cliente extends Persona implements Telegraph {
         for (int i = 0; i < generator.nextInt(5) + 1; i++)
             prodotti.add(Database.pizze[generator.nextInt(Database.pizze.length)]);
         ordine = new Ordine(this, prodotti, ora);
-        System.out.println("[CLIENTE] Genero un nuovo ordine! Passerò -> " + ordine.getOra());
+        //System.out.println("["+nome+"] Nuovo evento ->" + ordine.getOra());
     }
 
     public String getNome() {
@@ -88,7 +91,16 @@ public class Cliente extends Persona implements Telegraph {
 
     @Override
     public boolean handleMessage(Telegram msg) {
-        if (statoCorrente == Stato.Coda && msg.message == Messaggi.ProssimoCliente) mioTurno = true;
+        if (statoCorrente == Stato.Coda || statoCorrente == Stato.Cammina) {
+            switch (msg.message) {
+                case Messaggi.PostoInCoda:
+                    postoInCoda = (int) msg.extraInfo;
+                    //System.out.println("["+nome+"] Posto in coda: "+postoInCoda);
+                    setNext(Renderer.coordinateCoda(postoInCoda));
+                    if (postoInCoda == 0) mioTurno = true;
+                    break;
+            }
+        }
         if (statoCorrente == Stato.Ordina && msg.message == Messaggi.OrdineCompletato) statoCorrente = Stato.Esci;
         return true;
     }

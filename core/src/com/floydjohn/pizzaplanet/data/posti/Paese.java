@@ -4,6 +4,7 @@ import com.floydjohn.pizzaplanet.data.persone.Cliente;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Paese {
     List<Cliente> clienti = new ArrayList<>();
@@ -11,9 +12,7 @@ public class Paese {
 
     public Paese() {
         pizzeria = new Pizzeria();
-        for (int i = 0; i < 1; i++) {
-            clienti.add(new Cliente(1));
-        }
+        for (int i = 0; i < 2; i++) clienti.add(new Cliente(new Random().nextInt(4) + 1));
     }
 
     public Pizzeria getPizzeria() {
@@ -23,5 +22,9 @@ public class Paese {
     public void update() {
         pizzeria.update();
         for (Cliente cliente : clienti) cliente.update();
+    }
+
+    public List<Cliente> getClienti() {
+        return clienti;
     }
 }

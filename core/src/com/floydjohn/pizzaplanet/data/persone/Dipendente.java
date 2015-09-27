@@ -38,7 +38,7 @@ public class Dipendente extends Persona implements Telegraph {
     }
 
     public void muovi(Posto posto) {
-        Logger.debug(nome + ", mi muovo da " + this.posto + " a " + posto.name());
+        //Logger.debug(nome + ", mi muovo da " + this.posto + " a " + posto.name());
         super.setNext(Renderer.coordinateRealiDi(posto));
         nextPosto = posto;
     }
@@ -49,7 +49,7 @@ public class Dipendente extends Persona implements Telegraph {
             posto = nextPosto;
             timer.setDelay(15 - attributi.get(posto));
             nextPosto = null;
-            System.out.println("[DIP] Arrivato a " + posto);
+            //System.out.println("[DIP] Arrivato a " + posto);
             send(Messaggi.DipendenteArrivato, null, posto);
         }
         timer.update();
@@ -66,7 +66,7 @@ public class Dipendente extends Persona implements Telegraph {
                 break;
             case AssumiDipendente:
                 if (msg.extraInfo instanceof Posto) {
-                    Logger.debug(nome + ", sono stato assunto in " + msg.extraInfo + ", Yay!");
+                    //Logger.debug(nome + ", sono stato assunto in " + msg.extraInfo + ", Yay!");
                     muovi((Posto) msg.extraInfo);
                     return true;
                 } else Logger.debug(nome + ", il posto a cui andare non è nel formato corretto.");
@@ -84,5 +84,9 @@ public class Dipendente extends Persona implements Telegraph {
     private void send(int msg, Telegraph target, Object extraInfo) {
         if (target == null) MessageManager.getInstance().dispatchMessage(this, msg, extraInfo);
         else MessageManager.getInstance().dispatchMessage(this, target, msg, extraInfo);
+    }
+
+    public boolean inPausa() {
+        return !timer.isRunning();
     }
 }
